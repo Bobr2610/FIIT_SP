@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
 
+# Настройка vcpkg
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_temp/scripts/buildsystems/vcpkg.cmake"
+        CACHE STRING "Vcpkg toolchain file")
+endif()
+set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "")
+
 project(sys_prog LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
