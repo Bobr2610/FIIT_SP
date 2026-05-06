@@ -68,6 +68,31 @@ private:
 
     std::vector<allocator_test_utils::block_info> get_blocks_info_inner() const override;
 
+    char* get_data_start() const;
+    char* get_data_end() const;
+
+    std::mutex* get_mutex() const;
+    allocator_with_fit_mode::fit_mode* get_fit_mode() const;
+    size_t* get_total_size() const;
+    void* get_first_block() const;
+    bool is_from_trusted_memory(void* ptr) const;
+    size_t get_block_size(void* block) const;
+    void* get_block_next(void* block) const;
+    void* get_block_prev(void* block) const;
+    void* get_block_next_foot(void* block) const;
+    void set_block_size(void* block, size_t size);
+    void set_block_next(void* block, void* next);
+    void set_block_prev(void* block, void* prev);
+    void set_block_next_foot(void* block, void* next_foot);
+    bool is_block_occupied(void* block) const;
+    void mark_block_occupied(void* block);
+    void mark_block_free(void* block);
+    void* get_user_data_start(void* block) const;
+    void* get_block_from_user_data(void* user_ptr) const;
+    size_t get_user_data_size(void* block) const;
+    void split_block(void* block, size_t user_size);
+    void merge_with_next(void* block);
+
 /** TODO: Highly recommended for helper functions to return references */
 
     class boundary_iterator
