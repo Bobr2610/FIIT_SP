@@ -17,7 +17,7 @@ private:
     
     void *_trusted_memory;
 
-    static constexpr const size_t allocator_metadata_size = sizeof(std::pmr::memory_resource *) + sizeof(fit_mode) + sizeof(size_t) + sizeof(std::mutex) + sizeof(void*);
+    static constexpr const size_t allocator_metadata_size = sizeof(std::pmr::memory_resource *) + sizeof(allocator_with_fit_mode::fit_mode) + sizeof(size_t) + sizeof(std::mutex) + sizeof(void*);
 
     static constexpr const size_t block_metadata_size = sizeof(void*) + sizeof(size_t);
 
@@ -61,6 +61,22 @@ private:
 
     std::vector<allocator_test_utils::block_info> get_blocks_info_inner() const override;
 
+    std::mutex* get_mutex() const;
+    fit_mode* get_fit_mode() const;
+    size_t* get_total_size() const;
+    void** get_list_head() const;
+    bool is_from_trusted_memory(void* ptr) const;
+    size_t get_block_size(void* block) const;
+    void set_block_size(void* block, size_t size);
+    bool is_block_occupied(void* block) const;
+    void mark_block_occupied(void* block);
+    void mark_block_free(void* block);
+    void** get_block_next(void* block) const;
+    void insert_free_block(void* block);
+    void remove_free_block(void* prev, void* block);
+    void insert_sorted_free_block(void* block, size_t size);
+    void merge_adjacent_free_blocks();
+
     class sorted_free_iterator
     {
         void* _free_ptr;
@@ -92,9 +108,8 @@ private:
 
     class sorted_iterator
     {
-        void* _free_ptr;
         void* _current_ptr;
-        void* _trusted_memory;
+        void* _end_ptr;
 
     public:
 
@@ -120,7 +135,7 @@ private:
 
         sorted_iterator();
 
-        sorted_iterator(void* trusted);
+        sorted_iterator(void* current, void* end);
     };
 
     friend class sorted_iterator;
