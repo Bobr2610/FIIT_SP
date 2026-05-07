@@ -412,7 +412,11 @@ void allocator_sorted_list::do_deallocate_sm(void *at) {
 }
 
 bool allocator_sorted_list::do_is_equal(const std::pmr::memory_resource &other) const noexcept {
-    return typeid(*this) == typeid(other);
+    if (this == &other) {
+        return true;
+    }
+    auto *casted = dynamic_cast<const allocator_sorted_list *>(&other);
+    return casted && memory_ == casted->memory_;
 }
 
 inline void allocator_sorted_list::set_fit_mode(allocator_with_fit_mode::fit_mode mode) {
