@@ -205,7 +205,7 @@ TEST(bTreePositiveTests, test4)
                     test_data<int, std::string>(0, 15, "c"),
                     test_data<int, std::string>(1, 24, "g"),
                     test_data<int, std::string>(2, 45, "k"),
-                    test_data<int, std::string>(1, 100, "f"),
+                    test_data<int, std::string>(0, 100, "f"),
                     test_data<int, std::string>(0, 101, "j"),
                     test_data<int, std::string>(1, 193, "l"),
                     test_data<int, std::string>(2, 456, "h"),
@@ -395,12 +395,18 @@ TEST(bTreePositiveTests, test9)
 {
     std::vector<BP_tree<int, std::string>::value_type> expected_result =
             {
+                    { 1, "a" },
+                    { 2, "b" },
+                    { 3, "d" },
                     { 4, "e" },
                     { 15, "c" },
                     { 24, "g" },
                     { 45, "k" },
                     { 100, "f" },
                     { 101, "j" },
+                    { 193, "l" },
+                    { 456, "h" },
+                    { 534, "m" },
             };
 
     BP_tree<int, std::string, std::less<int>, 5> tree(std::less<int>(), nullptr);
